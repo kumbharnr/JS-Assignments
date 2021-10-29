@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+
+    <meta name="description" content="">
+    <meta name="author" content="">  
+    <link rel="stylesheet" 
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+        crossorigin="anonymous">
+    <title>Student Data</title>
+    
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link href="table.css" rel="stylesheet" type="text/css">
+  </head>
+
+
+
+  <body>
+    <!-- Header Section -->
+    <div class="header text-white bg-dark p-3">
+      <h5 class="main-heading text-center mx-auto">Student Data</h5>
+      <!-- Modal Button -->
+      <button type="button" id="addEmpBtn" data-toggle="modal" data-target="#exampleModalCenter">
+        
+        Add student
+      </button>
+      <!-- <input type="text" id="myInput" onkeyup="findById()" placeholder="Search id.." title="Type in a name"> -->
+
+      <input type="text" id="myInput" onkeyup="searchfun()" placeholder="Search names.." title="Type in a name">
+
+      <!-- Button trigger modal -->
+
+      <!-- Modal -->
+      <form id="studentformdetails" class="text-dark">
+      <div class="modal fade" id="exampleModalCenter" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-dark" id="exampleModalLongTitle">Add Student</h5>
+              
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- Another pop up for fill a data -->
+            <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="student_name">Student Name :</label>
+                      <input id="student_name" class="form-control form-control-sm" type="text" placeholder="Student Name">
+                  </div>
+                  <div class="form-group">
+                    <label for="Streams">Stream :</label>
+                      <input id="Streams" class="form-control form-control-sm" type="text" placeholder="Student Stream">
+                  </div>
+                  <div class="form-group">
+                    <label for="Marks">Marks :</label>
+                      <input id="Marks" class="form-control form-control-sm" type="text" placeholder="Student Marks">
+                  </div>
+                  <div class="form-group">
+                    <label for="uni_number">University Number :</label>
+                      <input id="uni_number" class="form-control form-control-sm" type="text" placeholder="Student University Number">
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" >Add</button>
+                  </div>
+                </form>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+      </form>
+
+    </div>  
+
+
+    <!-- Table Section -->
+    <div>
+      <h4 class="tables"></h4>
+      <div class="table-responsive">
+        <table id="mytable" class="table">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col"> Student Name</th>
+              <th scope="col">Stream</th>
+              <th scope="col">Marks</th>
+              <th scope="col">University Number</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="t-body">
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+
+
+    
+    <script src="table.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    
+  </body>
+  </html>
