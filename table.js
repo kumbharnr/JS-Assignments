@@ -1,39 +1,108 @@
-var studentformdetails = document.getElementById('studentformdetails');
-studentformdetails.addEventListener('submit',savestudentdata);
+// Submitting Emp Form to Local Storage
 
-//function for save student data
+var empDetailsForm = document.getElementById('empDetailsForm');
+empDetailsForm.addEventListener('submit',saveEmpData);
 
-function savestudentdata(e){
+
+function saveEmpData(e){
     
     
     var d=new Date();
     var getId=d.getTime();
 
-    var std = {
-        //get id automatically 
+    var emp = {
         id:getId,
-        student_name: document.getElementById('student_name').value,
-        Streams: document.getElementById('Streams').value,
-        Marks: document.getElementById('Marks').value,
-        uni_number: document.getElementById('uni_number').value
+        emp_name: document.getElementById('emp_name').value,
+        emp_email: document.getElementById('emp_email').value,
+        emp_mobile: document.getElementById('emp_mobile').value,
+        emp_address: document.getElementById('emp_address').value
     }
-//store in std table its store in array and push in std variable 
-    if(localStorage.getItem('Students')===null){
-        var Students=[];
-        Students.push(std);
-        
+
+    if(localStorage.getItem('employees')===null){
+        var employees=[];
+        employees.push(emp);
+        localStorage.setItem('employees', JSON.stringify(employees));
     }else{
-        var Students=JSON.parse(localStorage.getItem('Students'));
-        Students.push(std);
-        localStorage.setItem('Students', JSON.stringify(Students));
+        var employees=JSON.parse(localStorage.getItem('employees'));
+        employees.push(emp);
+        localStorage.setItem('employees', JSON.stringify(employees));
     }
     document.getElementById('exampleModalCenter').close();
-    document.getElementById('studentformdetails').reset();
-    showstdData();
+    document.getElementById('empDetailsForm').reset();
+    showEmpData();
     e.preventDefault();
 }
 
-// search function
+// Displaying Employes 
+
+window.onload = function(){
+    this.showEmpData();
+}
+
+function showEmpData(){
+    var tbody = document.getElementById('t-body');
+    var employees = JSON.parse(localStorage.getItem('employees'));
+    
+    var eachEmpRow = ' ';
+    for(let i=0;i<employees.length;i++){
+        eachEmpRow += 
+        `<tr>
+            <th scope="row">${i}</th>
+                <td>${employees[i].emp_name}</td>
+                <td>${employees[i].emp_email}</td>
+                <td>${employees[i].emp_mobile}</td>
+                <td>${employees[i].emp_address}</td>
+                <td>
+                    <button id="${employees[i].id}" onclick="editEmp(this.id, this)" class="btn btn-sm btn-primary" title="Edit" ><i class="fa fa-pencil "></i></button>
+                    <button id="${employees[i].id}" onclick="deleteEmp(this.id)" class="btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
+                </td>
+        </tr>`;
+    }
+    tbody.innerHTML = eachEmpRow;
+}
+
+// Deleting Employee From Local Storage  
+
+function deleteEmp(id){
+    var employees = JSON.parse(localStorage.getItem('employees'));
+
+    for(let i=0;i<employees.length;i++){
+        if(employees[i].id == id){
+            employees.splice(i, 1);
+        }
+    }
+    localStorage.setItem('employees', JSON.stringify(employees));
+    showEmpData();
+}
+
+// Editing and saving the Emp Data
+function editEmp(id, selectedrow){
+    var employees = JSON.parse(localStorage.getItem('employees'));
+
+    var activeRow = selectedrow.parentElement.parentElement.rowIndex;
+    //console.log(activeRow-1);
+
+    var tbody = document.getElementById('t-body').children[activeRow-1];
+    var eachEmpRow = ' ';
+
+    for(let i=0;i<employees.length;i++){
+        if(id == employees[i].id){
+            eachEmpRow += 
+            `<tr>
+                <th scope="row">${i}</th>
+                    <td><input type="text" id="edit_emp_name" value="${employees[i].emp_name}" /></td>
+                    <td><input type="text" id="edit_emp_email" value="${employees[i].emp_email}" /></td>
+                    <td><input type="text" id="edit_emp_mobile" value="${employees[i].emp_mobile}" /></td>
+                    <td><input type="text" id="edit_emp_address" value="${employees[i].emp_address}" /></td>
+                    <td>
+                        <button id="${employees[i].id}" onclick="saveEditEmp(this.id)" class="btn btn-sm btn-success edit" title="Save"><i class="fa fa-save"></i></button>
+                        <button onclick="cancelEditEmp()" class="btn btn-sm btn-warning text-white" title="Cancel">X</button>
+                    </td>
+            </tr>`;
+        }
+    }
+    tbody.innerHTML = eachEmpRow;
+}
 function searchfun() {
     var input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("myInput");
@@ -52,93 +121,22 @@ function searchfun() {
       }       
     }
   }
-// Displaying 
-
-window.onload = function(){
-    this.showstdData();
-}
-
-function showstdData(){
-    var tbody = document.getElementById('t-body');
-    var Students = JSON.parse(localStorage.getItem('Students'));
+function saveEditEmp(id){
+    var employees = JSON.parse(localStorage.getItem('employees'));
     
-    var eachstdRow = ' ';
-    for(let i=0;i<Students.length;i++){
-        eachstdRow += 
-        `<tr>
-            <th scope="row">${i}</th>
-                <td>${Students[i].student_name}</td>
-                <td>${Students[i].Streams}</td>
-                <td>${Students[i].Marks}</td>
-                <td>${Students[i].uni_number}</td>
-                <td>
-                    <button id="${Students[i].id}" onclick="editstd(this.id, this)" class="btn btn-sm btn-primary" title="Edit" ><i class="fa fa-pencil "></i></button>
-                    <button id="${Students[i].id}" onclick="deletestd(this.id)" class="btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
-                </td>
-        </tr>`;
-    }
-    tbody.innerHTML = eachstdRow;
-}
-
-// Deleting From Local Storage  
-
-function deletestd(id){
-    var Students = JSON.parse(localStorage.getItem('Students'));
-
-    for(let i=0;i<Students.length;i++){
-        if(Students[i].id == id){
-            Students.splice(i, 1);
+    for(let i=0;i<employees.length;i++){
+        if(employees[i].id==id){
+            employees[i].id=id;
+            employees[i].emp_name = document.getElementById('edit_emp_name').value;
+            employees[i].emp_email = document.getElementById('edit_emp_email').value;
+            employees[i].emp_mobile = document.getElementById('edit_emp_mobile').value;
+            employees[i].emp_address = document.getElementById('edit_emp_address').value;
         }
     }
-    localStorage.setItem('Students', JSON.stringify(Students));
-    showstdData();
+    localStorage.setItem('employees', JSON.stringify(employees));
+    showEmpData();
 }
 
-// Editing and saving the std Data
-function editstd(id, selectedrow){
-    var Students = JSON.parse(localStorage.getItem('Students'));
-
-    var activeRow = selectedrow.parentElement.parentElement.rowIndex;
-    
-
-    var tbody = document.getElementById('t-body').children[activeRow-1];
-    var eachstdRow = ' ';
-
-    for(let i=0;i<Students.length;i++){
-        if(id == Students[i].id){
-            eachstdRow += 
-            `<tr>
-                <th scope="row">${i}</th>
-                    <td><input type="text" id="edit_std_name" value="${Students[i].student_name}" /></td>
-                    <td><input type="text" id="edit_std_email" value="${Students[i].Streams}" /></td>
-                    <td><input type="text" id="edit_std_mobile" value="${Students[i].Marks}" /></td>
-                    <td><input type="text" id="edit_std_address" value="${Students[i].uni_number}" /></td>
-                    <td>
-                        <button id="${Students[i].id}" onclick="saveEditstd(this.id)" class="btn btn-sm btn-success edit" title="Save"><i class="fa fa-save"></i></button>
-                        <button onclick="cancelEditstd()" class="btn btn-sm btn-warning text-white" title="Cancel">X</button>
-                    </td>
-            </tr>`;
-        }
-    }
-    tbody.innerHTML = eachstdRow;
-}
-// save the edited data
-function saveEditstd(id){
-    var Students = JSON.parse(localStorage.getItem('Students'));
-    
-    for(let i=0;i<Students.length;i++){
-        if(Students[i].id==id){
-            Students[i].id=id;
-            Students[i].student_name = document.getElementById('edit_std_name').value;
-            Students[i].Streams = document.getElementById('edit_std_email').value;
-            Students[i].Marks = document.getElementById('edit_std_mobile').value;
-            Students[i].uni_number = document.getElementById('edit_std_address').value;
-        }
-    }
-    localStorage.setItem('Students', JSON.stringify(Students));
-    showstdData();
-}
-
-function cancelEditstd(){
-    showstdData();
+function cancelEditEmp(){
+    showEmpData();
 }
